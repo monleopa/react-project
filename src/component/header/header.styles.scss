@@ -4,3 +4,30 @@
   color: #fff;
   border-radius: 3px;
 }
+
+.signin {
+  color: rgba(0,0,0,.5)!important;
+  font-size: 30px;
+  padding-left: 20px;
+}
+
+.number-cart {
+  position: absolute;
+  right: 0px;
+  left: 27px;
+  bottom: 0;
+  top: 6px;
+  color: white;
+  font-size: 15px;
+}
+.cart {
+  position: relative;
+}
+
+.nav-item {
+  padding: 0 10px;
+}
+
+.navbar-brand {
+  padding: 0;
+}
