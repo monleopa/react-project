@@ -5,6 +5,7 @@ import SignUp from './component/sign-up/sign-up.component'
 import SignIn from './component/sign-in/sign-in.component'
 import Header from './component/header/header.component'
 import ListItem from './component/list-item/list-item.component'
+import DetailItem from './component/detail-item/detail-item.component'
 import ManageItem from './component/manage-item/manage-item.component'
 // import Slider from './component/slider/slider.component'
 import API from './API/define-api'
@@ -31,7 +32,7 @@ class App extends React.Component {
         if (res.status === 200) {
           if (res.data.data) {
             me.setState({
-              user: user
+              user: JSON.parse(user)
             });
           }
         }
@@ -85,13 +86,18 @@ class App extends React.Component {
             />
 
             <Route
+              path="/item"
+              render={(props) => <DetailItem {...props} user={this.state.user} />}
+            />
+
+            <Route
               path="/manageitem"
               render={(props) => <ManageItem />}
             />
 
             <Route
               path="/"
-              render={(props) => <ListItem />}
+              render={(props) => <ListItem {...props} category={"new"}/>}
             />
           </Switch>
         </div>

@@ -1,11 +1,28 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './header.styles.scss'
 
 class Header extends Component {
+  constructor() {
+    super();
 
+    this.state = {
+      isShow: false
+    }
+  }
   logout = () => {
     this.props.logout();
+  }
+
+  toggleShow = (e) => {
+    var show = this.state.isShow;
+    this.setState({
+      isShow: !show
+    })
+  }
+
+  onSignIn = (e) =>{
+    window.location.href = "/signin"
   }
 
   render() {
@@ -45,23 +62,44 @@ class Header extends Component {
           {
             this.props.isLogin ?
 
-            <span>
-              <span className="fix-signin">
-                <Link to="/order" className="signin cart">
-                  <span class="number-cart">0</span>
-                  <i class="fas fa-shopping-cart"></i>
-                </Link>
+              <span>
+                <span className="fix-signin">
+                  <Link to="/order" className="signin cart">
+                    <span className="number-cart">0</span>
+                    <i className="fas fa-shopping-cart"></i>
+                  </Link>
+                </span>
+                <span className="fix-signin disable-blacken">
+                  <i className="fas fa-ellipsis-h more" onClick={this.toggleShow}></i>
+                  {
+                    this.state.isShow ?
+                      (<div id="choice-user" className="choice-user">
+                        <Link to="#">
+                          <div className="select-option">
+                            <i className="fas fa-user"></i> Change Password
+                        </div>
+                        </Link>
+                        <Link to="#">
+                          <div className="select-option">
+                            <i className="fas fa-clipboard-list"></i> Manage Order
+                        </div>
+                        </Link>
+
+                        <Link to="#" onClick={this.logout}>
+                          <div className="select-option">
+                            <i className="fas fa-sign-out-alt"></i> Sign Out
+                        </div>
+                        </Link>
+                      </div>) : <div></div>
+                  }
+                </span>
               </span>
-              <span className="fix-signin">
-                <Link to="#" className="signin" onClick={this.logout}><i class="fas fa-sign-out-alt"></i></Link>
+              :
+              <span className="fix-signin btn-sign-in">
+                <button className="btn btn-dark" onClick={this.onSignIn}>SIGN IN</button>
               </span>
-            </span>
-            :
-            <span className="fix-signin">
-              <Link to="/signin" className="signin"><i class="fas fa-user"></i></Link>
-            </span>
           }
-         
+
         </div>
       </nav>
     )

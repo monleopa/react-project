@@ -1,23 +1,41 @@
 import React from 'react';
 import './item.styles.scss';
 
-const Item = ({ item }) => {
-  const { name, price, imageUrl } = item;
+class Item extends React.Component {
+  viewDetail = () => {
+    window.location.href = "/item/" + this.ItemID;
+  }
 
-  return (
-    <div className='collection-item col-sm-3' title={name}>
-      <div
-        className='image'
-        style={{
-          backgroundImage: `url(${imageUrl})`
-        }}
-      />
-      <div className='collection-footer row'>
-        <span className='name col-md-8'>{name}</span>
-        <span className='price col-md-4'>{price}$</span>
+  render() {
+    const { itemName, price, itemImage, itemCode, itemID } = this.props.item;
+    this.ItemID = itemID;
+    return (
+      <div key={itemID} className='collection-item col-sm-3' title={itemName}>
+        <div
+          className='image'
+          style={{
+            backgroundImage: `url(${itemImage})`
+          }}
+          onClick = {this.viewDetail}
+        />
+        <div className='collection-footer row'>
+          <span className='name col-md-12'><b>{itemName}</b></span>
+        </div>
+        <div className='collection-footer row footer-second'>
+          <span className='item-code col-md-6'>{itemCode}</span>
+          <span className='price col-md-6'>{price}$</span>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
+
+// const Item = ({ key, item, view }) => {
+
+// };
+
+// function viewDetail(e) {
+//   console.log(e.target.key)
+// }
 
 export default Item;
