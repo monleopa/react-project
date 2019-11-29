@@ -7,7 +7,9 @@ var APILink = "http://localhost:55244/api/"
   detailitem: APILink + "item/detail/",
   commentItem: APILink + "item/comment",
   listitem: APILink + "item/",
-  comment: APILink + "item/comment"
+  comment: APILink + "item/comment",
+  getOrder: APILink + "order/",
+  order: APILink + "order",
 }
 
 export default API

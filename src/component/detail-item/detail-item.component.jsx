@@ -22,6 +22,7 @@ class DetailItem extends Component {
       listItemDetail: [],
       listComment: [],
       itemDetail: null,
+      DetailItemID: '',
       Quantity: 1,
       CommentContent: '',
     }
@@ -35,9 +36,10 @@ class DetailItem extends Component {
       Axios.get(link).then(res => {
         if (res.status) {
           if (res.data.success) {
-            var data = res.data.data
+            var data = res.data.data;
             me.setState({
-              ...data
+              ...data,
+              DetailItemID: data.listItemDetail[0].detailItemID,
             });
           }
         }
@@ -79,7 +81,8 @@ class DetailItem extends Component {
           var listComment = me.state.listComment;
           listComment.push(comment);
           me.setState({
-            listComment: listComment
+            listComment: listComment,
+            CommentContent: '',
           })
         } else {
           console.log(res.data);
@@ -91,7 +94,7 @@ class DetailItem extends Component {
 
   OrderItem = (e) => {
     if (this.savedata) {
-
+      this.props.orderItem(this.state.DetailItemID, this.state.Quantity);
     } else {
       window.location.href = "/signin"
     }
@@ -127,10 +130,10 @@ class DetailItem extends Component {
                   </div>
                   <div className="col-md-6 left d-flex">
                     <div className="label">Size</div>
-                    <select className="form-control size" name="Size">
+                    <select className="form-control size" name="DetailItemID" onChange={this.handleChange}>
                       {
                         this.state.listItemDetail ?
-                          this.state.listItemDetail.map(x => (<option key={x.detailItemID}>{x.size}</option>)) :
+                      this.state.listItemDetail.map(x => (<option key={x.detailItemID} label={x.size}>{x.detailItemID}</option>)) :
                           null
                       }
                     </select>

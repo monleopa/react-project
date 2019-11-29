@@ -100,7 +100,7 @@ class ListItem extends React.Component {
   render() {
     return(
       <div className='collection-preview'>
-        <h1 className='title-list'>{"Sản phẩm".toUpperCase()}</h1>
+        <h1 className='title-list'>{"Items new".toUpperCase()}</h1>
         <div className="container">
           <div className="row">
             {

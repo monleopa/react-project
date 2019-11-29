@@ -1,0 +1,36 @@
+.icon-center {
+  text-align: center;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.image {
+  width: 31%;
+  height: 117px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.table td {
+  padding: .75rem;
+  vertical-align: inherit;
+  border-bottom: 1px solid #dee2e6;
+  border-top: none;
+}
+
+.table tfoot td {
+  border: none;
+}
+
+.set-size {
+  margin: auto;
+  cursor: pointer;
+}
+
+.quantity-size {
+  width: 75px;
+  text-align: center;
+}

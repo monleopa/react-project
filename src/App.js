@@ -6,7 +6,9 @@ import SignIn from './component/sign-in/sign-in.component'
 import Header from './component/header/header.component'
 import ListItem from './component/list-item/list-item.component'
 import DetailItem from './component/detail-item/detail-item.component'
+import Order from './component/order/order.component'
 import ManageItem from './component/manage-item/manage-item.component'
+import CheckOut from './component/checkout/checkout.component'
 // import Slider from './component/slider/slider.component'
 import API from './API/define-api'
 import Axios from 'axios';
@@ -19,6 +21,7 @@ class App extends React.Component {
 
     this.state = {
       user: null,
+      order: null,
     }
   }
 
@@ -34,11 +37,55 @@ class App extends React.Component {
             me.setState({
               user: JSON.parse(user)
             });
+
+            me.getOrderByID(me.state.user.accountID);
+          } else {
+            console.log(res.data.data)
           }
         }
       });
     }
+  }
 
+  getOrderByID = (id) => {
+    var me = this;
+    Axios.get(API.getOrder + id).then(res => {
+      if (res.status === 200) {
+        if (res.data.success) {
+          me.setState({
+            order: res.data.data
+          })
+        } else {
+          console.log(res.data.data)
+        }
+      }
+    });
+  }
+
+  orderItem = (idItem, quantity) => {
+    var me = this;
+    var detailItem = {
+      DetailItemID: idItem,
+      Quantity: quantity,
+      OrderID: this.state.order.orderID
+    }
+    console.log(detailItem);
+    Axios.post(API.order, detailItem).then(res => {
+      console.log(res)
+      if (res.status === 200) {
+        if (res.data.success) {
+          var listOrder = this.state.order.listOrderDetail;
+          listOrder.push(detailItem);
+          me.setState({
+            order: {
+              listOrderDetail: listOrder,
+            }
+          })
+        } else {
+          console.log(res.data.data);
+        }
+      }
+    });
   }
 
   login = async (user) => {
@@ -71,9 +118,14 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Header isLogin={this.state.user != null} logout={this.logout} />
+          <Header isLogin={this.state.user != null} logout={this.logout} order={this.state.order} />
 
           <Switch>
+
+            <Route
+              path="/checkout"
+              render={(props) => <CheckOut/>}
+            />
 
             <Route
               path="/signin"
@@ -87,7 +139,12 @@ class App extends React.Component {
 
             <Route
               path="/item"
-              render={(props) => <DetailItem {...props} user={this.state.user} />}
+              render={(props) => <DetailItem {...props} user={this.state.user} orderItem={this.orderItem} />}
+            />
+
+            <Route
+              path="/order"
+              render={(props) => <Order {...props} user={this.state.user} />}
             />
 
             <Route
@@ -97,7 +154,9 @@ class App extends React.Component {
 
             <Route
               path="/"
-              render={(props) => <ListItem {...props} category={"new"}/>}
+              render={(props) =>
+                <ListItem {...props} category={"new"} />
+              }
             />
           </Switch>
         </div>

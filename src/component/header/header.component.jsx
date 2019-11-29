@@ -65,7 +65,7 @@ class Header extends Component {
               <span>
                 <span className="fix-signin">
                   <Link to="/order" className="signin cart">
-                    <span className="number-cart">0</span>
+                    <span className="number-cart">{this.props.order ? this.props.order.listOrderDetail.length : 0}</span>
                     <i className="fas fa-shopping-cart"></i>
                   </Link>
                 </span>
