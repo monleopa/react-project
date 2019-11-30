@@ -67,7 +67,6 @@ class DetailItem extends Component {
     var dataUser = this.savedata;
 
     Axios.post(API.comment, data).then(res => {
-      console.log(res)
       if (res.status) {
         if (res.data.success) {
           var comment = {
@@ -85,7 +84,8 @@ class DetailItem extends Component {
             CommentContent: '',
           })
         } else {
-          console.log(res.data);
+          // console.log(res.data);
+          alert("error");
         }
       }
     })

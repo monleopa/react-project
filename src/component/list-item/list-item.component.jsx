@@ -85,7 +85,6 @@ class ListItem extends React.Component {
   componentDidMount() {
     var category = this.props.category;
     var me = this;
-    console.log(category);
     Axios.get(API.listitem + category).then(res => {
       if(res.status === 200) {
         if(res.data.success) {

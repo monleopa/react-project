@@ -8,3 +8,7 @@
     -webkit-user-select: none; /* Chrome, Safari, and Opera */
     -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
+
+.center {
+    margin: 0 auto;
+}

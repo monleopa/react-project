@@ -88,3 +88,65 @@
 .fix-size-radio {
   width: 25px;
 }
+
+.radio-group .d-flex {
+  padding: 10px 0;
+}
+
+.stripe-btn {
+  color: #fff !important;
+  background: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+.abs-class {
+  position: absolute;
+  background: #ccc;
+  top: 66px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.infor-content {
+  background: #fff;
+  border-radius: 3px;
+  position: absolute;
+  top: 20%;
+  margin: 0 auto;
+  z-index: 2;
+  padding: 30px 50px;
+  left: 25%;
+  right: 25%;
+}
+
+.infor-title {
+  margin-right: 10px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.font-icon {
+  font-size: 35px;
+  color: #28a745;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.title-infor {
+  padding-bottom: 10px;
+}
+
+.footer-infor {
+  margin:auto 0;
+  padding-right: 10px;
+}
+
+.label-infor {
+  min-width: 130px;
+  text-align: left;
+}

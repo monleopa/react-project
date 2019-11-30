@@ -1,5 +1,6 @@
 import React from 'react'
 import StripeCheckout from 'react-stripe-checkout';
+import './stripe.scss'
 
 const StripeCheckoutButton = ({ price }) => {
   const priceForStripe = price;
@@ -19,9 +20,10 @@ const StripeCheckoutButton = ({ price }) => {
       billingAddress
       shippingAddress
       amount={priceForStripe}
-      panelLabel='Pay Now'
+      panelLabel='Order'
       token={onToken}
       stripeKey={publishableeKey}
+      className="form-control btn stripe-btn"
     />
   );
 

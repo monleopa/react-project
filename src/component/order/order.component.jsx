@@ -14,12 +14,14 @@ class Order extends Component {
       listOrderDetail: [],
       totalProduct: 0,
       currentListOrderDetail: [],
+      saleCodeID: null,
       saleCodeType: 1,
       saleCodeValue: 100,
       saleCodeString: '',
       errorDiscountMessage: '',
       errorDiscountShow: false,
       saleCode: null,
+      errorrStartOrder: '',
     }
   }
 
@@ -38,7 +40,7 @@ class Order extends Component {
 
             me.totalAmount();
           } else {
-            console.log(res.data.data)
+            alert("error");
           }
         }
       });
@@ -52,7 +54,6 @@ class Order extends Component {
   // };
 
   changeListOrder = (id, value) => {
-    console.log(value);
     var listOrder = this.state.listOrderDetail;
     listOrder.map(x => {
       if (x.orderDetailID == id) {
@@ -95,12 +96,12 @@ class Order extends Component {
       totalProduct += listOrder[i].price * listOrder[i].quantity;
     }
 
-    if(this.state.saleCodeType === 1) {
-      totalAmount = totalProduct * this.state.saleCodeValue/100;
+    if (this.state.saleCodeType === 1) {
+      totalAmount = totalProduct * this.state.saleCodeValue / 100;
     } else {
       totalAmount = totalProduct - this.state.saleCodeValue;
     }
-    
+
     totalAmount = totalAmount > 0 ? totalAmount : 0;
 
     this.setState({
@@ -120,16 +121,16 @@ class Order extends Component {
   applyDiscountCode = () => {
     var link = API.discount + this.state.saleCodeString;
     var me = this;
-    if(this.state.saleCodeValue === 100 && this.state.saleCodeType === 1) {
+    if (this.state.saleCodeValue === 100 && this.state.saleCodeType === 1) {
       Axios.get(link).then(res => {
-        if(res.status === 200) {
-          console.log(res.data)
-          if(res.data.success) {
+        if (res.status === 200) {
+          if (res.data.success) {
             var data = res.data.data;
             me.setState({
               saleCodeValue: data.saleCodeValue,
               saleCodeType: data.saleCodeType,
               saleCode: data,
+              saleCodeID: data.saleCodeID,
               errorDiscountMessage: '',
               errorDiscountShow: false,
               saleCodeString: '',
@@ -137,7 +138,7 @@ class Order extends Component {
 
             me.totalAmount();
           } else {
-            if(res.data.errorCode === 1) {
+            if (res.data.errorCode === 1) {
               me.setState({
                 errorDiscountMessage: res.data.error,
                 errorDiscountShow: true,
@@ -155,8 +156,58 @@ class Order extends Component {
   }
 
   startOrder = () => {
-    this.props.updateOrderNew(this.state.listOrderDetail, this.state.totalAmount, this.state.totalProduct, this.state.saleCode);
-    window.location.href = "/checkout";
+    if(this.state.listOrderDetail.length > 0) {
+      var data = {
+        OrderID: this.state.order.orderID,
+        ListOrderDetail: this.state.listOrderDetail,
+        AccountID: this.user.accountID,
+        TotalAmount: this.state.totalAmount,
+        ProductAmount: this.state.totalProduct,
+      }
+
+      if(this.state.saleCodeID) {
+        data["SaleCodeID"] = this.state.saleCodeID;
+      }
+
+      console.log(this.state.saleCode)
+      Axios.put(API.order, data).then(res => {
+        if(res.status === 200) {
+          if(res.data.success) {
+            window.location.href = "/checkout/" + data.OrderID;
+          } else {
+            alert("Error orrcur");
+          }
+        } else {
+          alert("Error orrcur");
+        }
+      })
+    } else {
+      this.setState({
+        errorrStartOrder: "You must have at least 1 item in your cart"
+      })
+    }
+  }
+
+  saveOrder = () => {
+    var data = {
+      OrderID: this.state.order.orderID,
+      ListOrderDetail: this.state.listOrderDetail,
+      AccountID: this.user.accountID,
+      TotalAmount: this.state.totalAmount,
+      ProductAmount: this.state.totalProduct,
+    }
+    Axios.put(API.order, data).then(res => {
+      if(res.status === 200) {
+        if(res.data.success) {
+          alert("success");
+        } else {
+          alert("Error orrcur");
+        }
+      } else {
+        alert("Error orrcur");
+      }
+    })
+
   }
 
   render() {
@@ -192,6 +243,13 @@ class Order extends Component {
             </table>
           </div>
           <div className="col-md-3 fix-order-container">
+            {
+              this.state.errorrStartOrder ?
+              <div className="row error">
+                {this.state.errorrStartOrder}
+              </div>
+              : null
+            }
             <div className="row total-size text-left">
               Total Products:
               <span className="price-number total-size total-amount"> {this.state.totalProduct}$</span>
@@ -201,41 +259,41 @@ class Order extends Component {
               <span className="price-number total-size total-amount">
                 {
                   this.state.saleCodeType === 1 ?
-                  ((100 - this.state.saleCodeValue) + '%')
-                  :
-                  (this.state.saleCodeValue + '$')
+                    ((100 - this.state.saleCodeValue) + '%')
+                    :
+                    (this.state.saleCodeValue + '$')
                 }
               </span>
             </div>
 
             {
               this.state.errorDiscountShow ?
-              (<div className="row error">
-                {this.state.errorDiscountMessage}
-              </div>)
-              :
-              null
+                (<div className="row error">
+                  {this.state.errorDiscountMessage}
+                </div>)
+                :
+                null
             }
 
             <div className="row">
               <div className="col-md-8 none-padding">
-                <input className="form-control" name="saleCodeString" onChange={this.handleChange}/>
+                <input className="form-control" name="saleCodeString" onChange={this.handleChange} />
               </div>
               <div className="col-md-4 none-padding">
                 <button className="btn btn-warning" onClick={this.applyDiscountCode}>Apply</button>
               </div>
             </div>
-            
-            <hr/>
+
+            <hr />
 
             <div className="row">
               <b>Total Amount:</b>
               <span className="price-number total-size total-amount"><b> {this.state.totalAmount}$</b></span>
             </div>
-            
+
             <div className="row"><button className="form-control btn btn-success" onClick={this.startOrder}>START ORDER</button></div>
 
-            <div className="row"><button className="form-control btn btn-primary">SAVE</button></div>
+            <div className="row"><button className="form-control btn btn-primary" onClick={this.saveOrder}>SAVE</button></div>
           </div>
         </div>
       </div>

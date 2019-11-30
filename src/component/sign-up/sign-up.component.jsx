@@ -33,7 +33,6 @@ class SignUp extends Component {
     } else {
       Axios.post(API.signup, account)
       .then(res => {
-        console.log(res);
         if (res.status === 200) {
           if (res.data.success) {
             window.location.href = "/signin"

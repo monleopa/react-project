@@ -41,7 +41,7 @@ class App extends React.Component {
 
             me.getOrderByID(me.state.user.accountID);
           } else {
-            console.log(res.data.data)
+            alert("error");
           }
         }
       });
@@ -57,7 +57,7 @@ class App extends React.Component {
             order: res.data.data
           })
         } else {
-          console.log(res.data.data)
+          alert("error");
         }
       }
     });
@@ -65,25 +65,25 @@ class App extends React.Component {
 
   orderItem = (idItem, quantity) => {
     var me = this;
+
     var detailItem = {
       DetailItemID: idItem,
       Quantity: quantity,
       OrderID: this.state.order.orderID
     }
-    console.log(detailItem);
+
     Axios.post(API.order, detailItem).then(res => {
-      console.log(res)
       if (res.status === 200) {
         if (res.data.success) {
           var listOrder = this.state.order.listOrderDetail;
           listOrder.push(detailItem);
+          var order = this.state.order;
+          order.listOrderDetail = listOrder
           me.setState({
-            order: {
-              listOrderDetail: listOrder,
-            }
+            order: order
           })
         } else {
-          console.log(res.data.data);
+          alert("Error");
         }
       }
     });
@@ -147,7 +147,7 @@ class App extends React.Component {
           <Switch>
             <Route
               path="/checkout"
-              render={(props) => <CheckOut {...props} orderPay={this.state.orderPay}/>}
+              render={(props) => <CheckOut {...props}/>}
             />
             <Route
               path="/signin"
@@ -164,8 +164,8 @@ class App extends React.Component {
             <Route
               path="/order"
               render={(props) => <Order {...props} user={this.state.user} 
-                                    saveCurrentListOrderDetail={this.saveCurrentListOrderDetail}
-                                    updateOrderNew={this.updateOrderNew}/>}
+                saveCurrentListOrderDetail={this.saveCurrentListOrderDetail}
+                updateOrderNew={this.updateOrderNew}/>}
             />
             <Route
               path="/manageitem"
