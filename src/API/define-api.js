@@ -10,6 +10,7 @@ var APILink = "http://localhost:55244/api/"
   comment: APILink + "item/comment",
   getOrder: APILink + "order/",
   order: APILink + "order",
+  discount: APILink + "order/discount/",
 }
 
 export default API

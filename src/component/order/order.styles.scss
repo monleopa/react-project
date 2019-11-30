@@ -2,10 +2,33 @@
   text-align: right;
 }
 
+.total-amount {
+  position: absolute;
+  right: 0;
+}
+
 .table-order {
   color: #343a40;
 }
 
 .total-size {
   font-size: 18px;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.none-padding {
+  padding: 0;
+}
+
+.fix-order-container {
+  position: fixed;
+  right: 12px;
+  top: 130px;
+}
+
+.error {
+  color: red;
 }

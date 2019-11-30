@@ -22,6 +22,7 @@ class App extends React.Component {
     this.state = {
       user: null,
       order: null,
+      orderPay: null,
     }
   }
 
@@ -114,44 +115,62 @@ class App extends React.Component {
     });
   }
 
+  saveCurrentListOrderDetail = (listCurrent, totalAmount) => {
+    this.setState({
+      currentListOrderDetail: listCurrent,
+      totalAmount: totalAmount
+    })
+  }
+
+  updateOrderNew = (listCurrent, totalAmount, productAmount, discount) => {
+    var data = {
+      TotalAmount: totalAmount,
+      ProductAmount: productAmount,
+      ListOrderDetail: listCurrent,
+      OrderID: this.state.order.orderID,
+      AccountID: this.state.user.accountID,
+      SaleCodeID: discount ? discount.saleCodeID : null,
+      SaleCodeType: discount ? discount.saleCodeType : 1,
+      SaleCodeValue: discount ? discount.saleCodeValue : 100,
+    }
+
+    this.setState({
+      orderPay: data
+    })
+  }
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
           <Header isLogin={this.state.user != null} logout={this.logout} order={this.state.order} />
-
           <Switch>
-
             <Route
               path="/checkout"
-              render={(props) => <CheckOut/>}
+              render={(props) => <CheckOut {...props} orderPay={this.state.orderPay}/>}
             />
-
             <Route
               path="/signin"
               render={(props) => <SignIn {...props} login={this.login} linkBefore={window.location.href} />}
             />
-
             <Route
               path="/signup"
               render={(props) => <SignUp />}
             />
-
             <Route
               path="/item"
               render={(props) => <DetailItem {...props} user={this.state.user} orderItem={this.orderItem} />}
             />
-
             <Route
               path="/order"
-              render={(props) => <Order {...props} user={this.state.user} />}
+              render={(props) => <Order {...props} user={this.state.user} 
+                                    saveCurrentListOrderDetail={this.saveCurrentListOrderDetail}
+                                    updateOrderNew={this.updateOrderNew}/>}
             />
-
             <Route
               path="/manageitem"
               render={(props) => <ManageItem />}
             />
-
             <Route
               path="/"
               render={(props) =>

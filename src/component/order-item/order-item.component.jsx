@@ -19,7 +19,7 @@ class OrderItem extends Component {
 
   increaseItem = (id) => {
     var { quantity } = this.props.orderDetail;
-    quantity = quantity + 1;
+    quantity = Number(quantity) + 1;
     this.props.changeListOrder(id, quantity);
   }
 
@@ -36,7 +36,7 @@ class OrderItem extends Component {
   }
 
   render() {
-    const { orderDetailID, itemImage, itemName, quantity, price } = this.props.orderDetail;
+    const { orderDetailID, itemImage, itemName, quantity, price, size } = this.props.orderDetail;
     return (
       <tr>
         <td>
@@ -50,6 +50,7 @@ class OrderItem extends Component {
             <div><b>{itemName}</b></div>
           </div>
         </td>
+        <td>{size}</td>
         <td>
           <div className="d-flex">
             <i className="fas fa-minus set-size" onClick={this.decreaseItem.bind(null, orderDetailID)}></i>

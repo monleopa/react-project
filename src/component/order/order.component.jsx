@@ -12,7 +12,14 @@ class Order extends Component {
     this.state = {
       order: null,
       listOrderDetail: [],
-      totalAmount: 0,
+      totalProduct: 0,
+      currentListOrderDetail: [],
+      saleCodeType: 1,
+      saleCodeValue: 100,
+      saleCodeString: '',
+      errorDiscountMessage: '',
+      errorDiscountShow: false,
+      saleCode: null,
     }
   }
 
@@ -45,6 +52,7 @@ class Order extends Component {
   // };
 
   changeListOrder = (id, value) => {
+    console.log(value);
     var listOrder = this.state.listOrderDetail;
     listOrder.map(x => {
       if (x.orderDetailID == id) {
@@ -57,6 +65,8 @@ class Order extends Component {
     })
 
     this.totalAmount();
+
+    this.props.saveCurrentListOrderDetail(listOrder, this.state.totalProduct);
   }
 
   deleteItemFromOrder = (id) => {
@@ -73,18 +83,80 @@ class Order extends Component {
       listOrderDetail: listOrder,
     })
     this.totalAmount();
+
+    this.props.saveCurrentListOrderDetail(listOrder, this.state.totalProduct);
   }
 
   totalAmount = () => {
+    var totalProduct = 0;
     var totalAmount = 0;
     var listOrder = this.state.listOrderDetail;
     for (var i = 0; i < listOrder.length; i++) {
-      totalAmount += listOrder[i].price * listOrder[i].quantity;
+      totalProduct += listOrder[i].price * listOrder[i].quantity;
     }
 
+    if(this.state.saleCodeType === 1) {
+      totalAmount = totalProduct * this.state.saleCodeValue/100;
+    } else {
+      totalAmount = totalProduct - this.state.saleCodeValue;
+    }
+    
+    totalAmount = totalAmount > 0 ? totalAmount : 0;
+
     this.setState({
+      totalProduct: totalProduct,
       totalAmount: totalAmount
-    }) 
+    })
+
+    this.props.saveCurrentListOrderDetail(listOrder, this.state.totalProduct);
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  applyDiscountCode = () => {
+    var link = API.discount + this.state.saleCodeString;
+    var me = this;
+    if(this.state.saleCodeValue === 100 && this.state.saleCodeType === 1) {
+      Axios.get(link).then(res => {
+        if(res.status === 200) {
+          console.log(res.data)
+          if(res.data.success) {
+            var data = res.data.data;
+            me.setState({
+              saleCodeValue: data.saleCodeValue,
+              saleCodeType: data.saleCodeType,
+              saleCode: data,
+              errorDiscountMessage: '',
+              errorDiscountShow: false,
+              saleCodeString: '',
+            })
+
+            me.totalAmount();
+          } else {
+            if(res.data.errorCode === 1) {
+              me.setState({
+                errorDiscountMessage: res.data.error,
+                errorDiscountShow: true,
+              });
+            }
+          }
+        }
+      })
+    } else {
+      this.setState({
+        errorDiscountMessage: "Each order is only applied 1 time discount code",
+        errorDiscountShow: true,
+      });
+    }
+  }
+
+  startOrder = () => {
+    this.props.updateOrderNew(this.state.listOrderDetail, this.state.totalAmount, this.state.totalProduct, this.state.saleCode);
+    window.location.href = "/checkout";
   }
 
   render() {
@@ -93,11 +165,12 @@ class Order extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-md-9">
             <table className="table table-order">
               <thead>
                 <tr>
                   <th scope="col">Item</th>
+                  <th scope="col">Size</th>
                   <th scope="col">Quantity</th>
                   <th scope="col">Price</th>
                   <th scope="col">Remove</th>
@@ -113,24 +186,56 @@ class Order extends Component {
                         deleteItemFromOrder={this.deleteItemFromOrder} />)
                     ))
                     :
-                    <tr><td colSpan="4">You don't have any item</td></tr>
+                    <tr><td colSpan="5">You don't have any item</td></tr>
                 }
               </tbody>
-              <tfoot>
-                <tr>
-                  <td></td>
-                  <td className="total-size"><b>Total:</b></td>
-                  <td className="price-number total-size"><b>{this.state.totalAmount}$</b></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td><button className="btn btn-primary">SAVE</button></td>
-                  <td className="price-number"><button className="btn btn-danger">START ORDER</button></td>
-                  <td></td>
-                </tr>
-              </tfoot>
             </table>
+          </div>
+          <div className="col-md-3 fix-order-container">
+            <div className="row total-size text-left">
+              Total Products:
+              <span className="price-number total-size total-amount"> {this.state.totalProduct}$</span>
+            </div>
+            <div className="row total-size text-left">
+              Discount:
+              <span className="price-number total-size total-amount">
+                {
+                  this.state.saleCodeType === 1 ?
+                  ((100 - this.state.saleCodeValue) + '%')
+                  :
+                  (this.state.saleCodeValue + '$')
+                }
+              </span>
+            </div>
+
+            {
+              this.state.errorDiscountShow ?
+              (<div className="row error">
+                {this.state.errorDiscountMessage}
+              </div>)
+              :
+              null
+            }
+
+            <div className="row">
+              <div className="col-md-8 none-padding">
+                <input className="form-control" name="saleCodeString" onChange={this.handleChange}/>
+              </div>
+              <div className="col-md-4 none-padding">
+                <button className="btn btn-warning" onClick={this.applyDiscountCode}>Apply</button>
+              </div>
+            </div>
+            
+            <hr/>
+
+            <div className="row">
+              <b>Total Amount:</b>
+              <span className="price-number total-size total-amount"><b> {this.state.totalAmount}$</b></span>
+            </div>
+            
+            <div className="row"><button className="form-control btn btn-success" onClick={this.startOrder}>START ORDER</button></div>
+
+            <div className="row"><button className="form-control btn btn-primary">SAVE</button></div>
           </div>
         </div>
       </div>
