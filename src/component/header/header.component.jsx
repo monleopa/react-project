@@ -21,6 +21,12 @@ class Header extends Component {
     })
   }
 
+  hideToggle = () => {
+    this.setState({
+      isShow: false
+    })
+  }
+
   onSignIn = (e) =>{
     window.location.href = "/signin"
   }
@@ -40,19 +46,16 @@ class Header extends Component {
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item">
-              <Link className="nav-link" to="#"><b>SHIRT</b></Link>
+              <Link className="nav-link" to="/category/shirt"><b>SHIRT</b></Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="#"><b>COAT</b></Link>
+              <Link className="nav-link" to="/category/coat"><b>COAT</b></Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="#"><b>PANTS</b></Link>
+              <Link className="nav-link" to="/category/pants"><b>PANTS</b></Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="#"><b>DRESS</b></Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/manageitem"><b>ManageItem</b></Link>
+              <Link className="nav-link" to="/category/dress"><b>DRESS</b></Link>
             </li>
           </ul>
           <form className="form-inline my-2 my-lg-0 form-search">
@@ -79,7 +82,7 @@ class Header extends Component {
                             <i className="fas fa-user"></i> Change Password
                         </div>
                         </Link>
-                        <Link to="#">
+                        <Link to="/manageorder" onClick={this.hideToggle}>
                           <div className="select-option">
                             <i className="fas fa-clipboard-list"></i> Manage Order
                         </div>

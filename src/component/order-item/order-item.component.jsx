@@ -17,7 +17,7 @@ class OrderItem extends Component {
     this.props.changeListOrder(orderDetailID, value);
   }
 
-  increaseItem = (id) => {
+  increaseItem = (id, e) => {
     var { quantity } = this.props.orderDetail;
     quantity = Number(quantity) + 1;
     this.props.changeListOrder(id, quantity);

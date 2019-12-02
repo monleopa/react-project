@@ -7,8 +7,10 @@ import Header from './component/header/header.component'
 import ListItem from './component/list-item/list-item.component'
 import DetailItem from './component/detail-item/detail-item.component'
 import Order from './component/order/order.component'
-import ManageItem from './component/manage-item/manage-item.component'
 import CheckOut from './component/checkout/checkout.component'
+import Category from './component/category/category.component'
+import CategoryItem from './component/category-item/category-item.component'
+import ManageOrder from './component/manage-order/manage-order.component'
 // import Slider from './component/slider/slider.component'
 import API from './API/define-api'
 import Axios from 'axios';
@@ -162,14 +164,25 @@ class App extends React.Component {
               render={(props) => <DetailItem {...props} user={this.state.user} orderItem={this.orderItem} />}
             />
             <Route
+              path="/category"
+              render={(props) => <Category match={props}/>}
+            />
+
+            <Route
+              path="/categoryitem"
+              render={(props) => <CategoryItem match={props}/>}
+            />
+
+            <Route
+              path="/manageorder"
+              render = {(props) => <ManageOrder user={this.state.user}/>}
+            />
+
+            <Route
               path="/order"
               render={(props) => <Order {...props} user={this.state.user} 
                 saveCurrentListOrderDetail={this.saveCurrentListOrderDetail}
                 updateOrderNew={this.updateOrderNew}/>}
-            />
-            <Route
-              path="/manageitem"
-              render={(props) => <ManageItem />}
             />
             <Route
               path="/"

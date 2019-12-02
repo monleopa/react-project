@@ -30,12 +30,4 @@ class Item extends React.Component {
   }
 }
 
-// const Item = ({ key, item, view }) => {
-
-// };
-
-// function viewDetail(e) {
-//   console.log(e.target.key)
-// }
-
 export default Item;
