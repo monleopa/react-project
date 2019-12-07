@@ -27,7 +27,6 @@ class Category extends Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    console.log(prevProps)
     if (this.props.match.location.pathname !== prevProps.match.location.pathname) {
       var link = API.category + window.location.pathname;
       var me = this;
@@ -61,6 +60,7 @@ class Category extends Component {
                       <div
                         className="menu-item"
                         onClick={this.viewListItem.bind(null, x.categoryID)}
+                        key={x.categoryID}
                       >
                         <div
                           className='background-image'
