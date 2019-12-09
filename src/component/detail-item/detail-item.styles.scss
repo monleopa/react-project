@@ -125,3 +125,14 @@
 .right {
   float: right;
 }
+
+.detail-price {
+  text-align: left;
+  font-size: 24px;
+  padding-bottom: 10px;
+}
+
+.loading-img {
+  background: url('../../assets/loading.gif') no-repeat;
+  background-size: 15%;
+}

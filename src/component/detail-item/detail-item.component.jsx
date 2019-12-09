@@ -25,6 +25,7 @@ class DetailItem extends Component {
       DetailItemID: '',
       Quantity: 1,
       CommentContent: '',
+      loading: false,
     }
   }
 
@@ -92,9 +93,22 @@ class DetailItem extends Component {
 
   }
 
-  OrderItem = (e) => {
+  OrderItem = async (e) => {
+    this.setState({
+      loading: true,
+    })
     if (this.savedata) {
-      this.props.orderItem(this.state.DetailItemID, this.state.Quantity);
+      var result = await this.props.orderItem(this.state.DetailItemID, this.state.Quantity);
+      debugger
+      console.log(result)
+      // if(result.success) {
+        
+      // } else {
+
+      // }
+      this.setState({
+        loading: false,
+      })
     } else {
       window.location.href = "/signin"
     }
@@ -133,7 +147,7 @@ class DetailItem extends Component {
                     <select className="form-control size" name="DetailItemID" onChange={this.handleChange}>
                       {
                         this.state.listItemDetail ?
-                      this.state.listItemDetail.map(x => (<option key={x.detailItemID} label={x.size}>{x.detailItemID}</option>)) :
+                          this.state.listItemDetail.map(x => (<option key={x.detailItemID} label={x.size}>{x.detailItemID}</option>)) :
                           null
                       }
                     </select>
@@ -143,8 +157,20 @@ class DetailItem extends Component {
                 <hr className="line" />
 
                 <div className="row">
+                  <div className="col-md-12 detail-price">
+                    <b>${this.state.price}</b>
+                  </div>
+                </div>
+
+                <div className="row">
                   <div className="col-md-12">
-                    <button className="btn btn-danger form-control" onClick={this.OrderItem}>ORDER</button>
+                    {
+                      this.state.loading ?
+                      <div className="loading-img"></div>
+                      :
+                      <button className="btn btn-danger form-control" onClick={this.OrderItem}>ORDER</button>
+                    }
+                    
                   </div>
                 </div>
 

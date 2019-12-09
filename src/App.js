@@ -65,7 +65,7 @@ class App extends React.Component {
     });
   }
 
-  orderItem = (idItem, quantity) => {
+  orderItem = async (idItem, quantity) => {
     var me = this;
 
     var detailItem = {
@@ -74,7 +74,7 @@ class App extends React.Component {
       OrderID: this.state.order.orderID
     }
 
-    Axios.post(API.order, detailItem).then(res => {
+    await Axios.post(API.order, detailItem).then(res => {
       if (res.status === 200) {
         if (res.data.success) {
           var listOrder = this.state.order.listOrderDetail;
@@ -87,6 +87,8 @@ class App extends React.Component {
         } else {
           alert("Error");
         }
+
+        return res.data;
       }
     });
   }
