@@ -4,13 +4,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import SignUp from './component/sign-up/sign-up.component'
 import SignIn from './component/sign-in/sign-in.component'
 import Header from './component/header/header.component'
-import ListItem from './component/list-item/list-item.component'
 import DetailItem from './component/detail-item/detail-item.component'
 import Order from './component/order/order.component'
 import CheckOut from './component/checkout/checkout.component'
 import Category from './component/category/category.component'
 import CategoryItem from './component/category-item/category-item.component'
 import ManageOrder from './component/manage-order/manage-order.component'
+import HomeList from './component/home-list/home-list.component'
 // import Slider from './component/slider/slider.component'
 import API from './API/define-api'
 import Axios from 'axios';
@@ -189,7 +189,7 @@ class App extends React.Component {
             <Route
               path="/"
               render={(props) =>
-                <ListItem {...props} category={"new"} />
+                <HomeList {...props} category={"new"} />
               }
             />
           </Switch>

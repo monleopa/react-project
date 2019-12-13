@@ -8490,6 +8490,11 @@ react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.10.1.tgz#0612786bf19df406502d935494f0450b40b8294f"
   integrity sha512-BXUMf9sIOPXXZWqr7+c5SeOKJykyVr2u0UDzEf4LNGc6taGkQe1A9DFD07umCIXz45RLr9oAAwZbAJ0Pkknfaw==
 
+react-multi-carousel@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-multi-carousel/-/react-multi-carousel-2.4.2.tgz#ae8e016f5ddcd194a05dabb1f1e53c11c58b1ca6"
+  integrity sha512-Kntbn42/ADMoF6dn9mKz1z9Kt2yp6FIseXmLEbwQ7H+GbD3WWmE6HQlIblYyrBO8EoSLSQr4++fCMKXwpZ/3Ag==
+
 react-owl-carousel@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/react-owl-carousel/-/react-owl-carousel-2.3.1.tgz#5b8e7459289e29e89d4d6cf359ddf05edf050b5f"

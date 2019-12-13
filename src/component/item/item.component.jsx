@@ -8,9 +8,11 @@ class Item extends React.Component {
 
   render() {
     const { itemName, price, itemImage, itemCode, itemID } = this.props.item;
+    var newClass = this.props.addClass ? this.props.addClass : "";
+    var classCollection = newClass ? 'collection-item col-sm-3 '+ newClass : 'collection-item col-sm-3'
     this.ItemID = itemID;
     return (
-      <div key={itemID} className='collection-item col-sm-3' title={itemName}>
+      <div key={itemID} className={classCollection} title={itemName}>
         <div
           className='image'
           style={{

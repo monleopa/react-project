@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react'
+import React, { Component} from 'react'
 import API from '../../API/define-api'
 import Axios from 'axios'
 import './order.styles.scss'
